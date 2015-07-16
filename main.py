@@ -11,13 +11,14 @@ from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api.images import get_serving_url
 
 template_dir = os.path.join(os.path.dirname(__file__), 'template')
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 
 class Art(ndb.Model):
     title = ndb.StringProperty()
     image_key = ndb.BlobKeyProperty()
     image_url = ndb.StringProperty()
+    tags = ndb.StringProperty(repeated=True)
 
 
 class Handler(webapp2.RequestHandler):
@@ -74,6 +75,7 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         upload = self.get_uploads()[0]
         new_art.image_key = upload.key()
         new_art.image_url = get_serving_url(new_art.image_key)
+        new_art.tags = self.request.get('image_tags').split()
         new_art.put()
         #self.redirect('/view_art/%s' % upload.key())
         self.redirect('/upload_form')
@@ -103,10 +105,34 @@ class GalleryHandler(Handler):
                 break
         self.render_main(list_image)
 
+
+class ModifyFormHandler(Handler):
+    def render_main(self, art_id=0):
+        art_key = ndb.Key(Art, art_id)
+        art = art_key.get()
+        self.render("modify_form.html", art_title=art.title, art_tags=art.tags, art_image=art.image_url, art_id=art_id)
+
+    def get(self):
+        self.render_main(6049512976023552)
+
+
+class ModifyHandler(Handler):
+    def post(self):
+        art_id = long(self.request.get("art_id"))
+        art_key = ndb.Key(Art, art_id)
+        art = art_key.get()
+        art.title = self.request.get('image_name')
+        art.tags = self.request.get('image_tags').split()
+        art.put()
+        self.redirect('/modify_form')
+
+
 app = webapp2.WSGIApplication([
     ('/', HomePage),
     ('/upload_form', UploadFormHandler),
     ('/upload', UploadHandler),
     ('/view_art/([^/]+)?', ViewArtHandler),
-    ('/gallery', GalleryHandler)
+    ('/gallery', GalleryHandler),
+    ('/modify_form', ModifyFormHandler),
+    ('/modify', ModifyHandler)
 ], debug=True)

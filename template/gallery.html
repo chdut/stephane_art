@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="/">Home</a><br>
+    {% for image in list_image %}
+    <img src="{{image}}=s300">
+    {% endfor %}
+{% endblock %}
