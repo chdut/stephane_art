@@ -8,3 +8,9 @@ h1 {
 body {
     width = 800px;
 }
+
+img.centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
