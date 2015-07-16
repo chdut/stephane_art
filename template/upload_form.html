@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{{upload_url}}" enctype="multipart/form-data" method="post">
+        Name of image : <br>
+        <div><input type="text" name="image_name"></div>
+        <div><label>Image</label></div>
+        <div><input type="file" name="img"/></div>
+        <div><input type="submit" value="upload"></div>
+    </form>
+{% endblock %}
