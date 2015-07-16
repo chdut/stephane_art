@@ -52,7 +52,7 @@ class HomePage(Handler):
 
         all_arts = Art.query()
         for art in all_arts:
-            image = art.image_url+"=s600"
+            image = art.image_url
             break
         self.render_main(image)
 
@@ -76,7 +76,7 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         new_art.image_url = get_serving_url(new_art.image_key)
         new_art.put()
         #self.redirect('/view_art/%s' % upload.key())
-        self.redirect('/')
+        self.redirect('/upload_form')
 
 
 class ViewArtHandler(blobstore_handlers.BlobstoreDownloadHandler):
@@ -87,9 +87,26 @@ class ViewArtHandler(blobstore_handlers.BlobstoreDownloadHandler):
             self.send_blob(photo_key)
 
 
+class GalleryHandler(Handler):
+    def render_main(self, list_image=""):
+        self.render("gallery.html", list_image=list_image)
+
+    def get(self):
+        all_arts = Art.query()
+        list_image = []
+        count = 0
+        max_image = 10
+        for art in all_arts:
+            list_image.append(art.image_url)
+            count += 1
+            if count == max_image:
+                break
+        self.render_main(list_image)
+
 app = webapp2.WSGIApplication([
     ('/', HomePage),
     ('/upload_form', UploadFormHandler),
     ('/upload', UploadHandler),
     ('/view_art/([^/]+)?', ViewArtHandler),
+    ('/gallery', GalleryHandler)
 ], debug=True)
