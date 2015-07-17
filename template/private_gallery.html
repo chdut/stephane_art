@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="/">Home</a><br>
+    {% for item in list_image %}
+    <a href="/private/modify_form/{{item[1]}}">
+        <img src="{{item[0]}}=s300">
+    </a>
+    {% endfor %}
+{% endblock %}

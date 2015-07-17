@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action = "/modify" enctype="multipart/form-data" method="post">
+<a href="/private/gallery">vers gallery</a><br>
+<form action = "/private/modify/{{art_key}}" enctype="multipart/form-data" method="post">
     <h2>actual information</h2>
     <div><input type="text" name="image_name" value="{{art_title}}"></div>
         Tags associate to the image: <br>
@@ -9,8 +10,9 @@
                 {{tag}}
             {% endfor %}"></div>
         <div><label>Image</label></div>
-        <div><input type="number" name="art_id" value ="{{art_id}}"></div>
         <div><input type="submit" value="modify"></div>
     <img src="{{art_image}}=s300" class="centered">
 </form>
+
+
 {% endblock %}

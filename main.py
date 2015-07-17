@@ -50,7 +50,6 @@ class HomePage(Handler):
         self.render("home.html", image=image)
 
     def get(self):
-
         all_arts = Art.query()
         for art in all_arts:
             image = art.image_url
@@ -99,7 +98,35 @@ class GalleryHandler(Handler):
         count = 0
         max_image = 10
         for art in all_arts:
-            list_image.append(art.image_url)
+            list_image.append([art.image_url, art.key.urlsafe()])
+            count += 1
+            if count == max_image:
+                break
+        self.render_main(list_image)
+
+
+class ViewImageHandler(Handler):
+    def render_main(self, image=""):
+        self.render("view_image.html", image=image)
+
+    def get(self, url_key):
+        art_key = ndb.Key(urlsafe=url_key)
+        art = art_key.get()
+        image = art.image_url
+        self.render_main(image)
+
+
+class PrivateGalleryHandler(Handler):
+    def render_main(self, list_image=""):
+        self.render("private_gallery.html", list_image=list_image)
+
+    def get(self):
+        all_arts = Art.query()
+        list_image = []
+        count = 0
+        max_image = 10
+        for art in all_arts:
+            list_image.append([art.image_url, art.key.urlsafe(), art.tags])
             count += 1
             if count == max_image:
                 break
@@ -107,24 +134,23 @@ class GalleryHandler(Handler):
 
 
 class ModifyFormHandler(Handler):
-    def render_main(self, art_id=0):
-        art_key = ndb.Key(Art, art_id)
+    def render_main(self, url_key=""):
+        art_key = ndb.Key(urlsafe=url_key)
         art = art_key.get()
-        self.render("modify_form.html", art_title=art.title, art_tags=art.tags, art_image=art.image_url, art_id=art_id)
+        self.render("modify_form.html", art_title=art.title, art_tags=art.tags, art_image=art.image_url, art_key=url_key)
 
-    def get(self):
-        self.render_main(6049512976023552)
+    def get(self, url_key):
+        self.render_main(url_key)
 
 
 class ModifyHandler(Handler):
-    def post(self):
-        art_id = long(self.request.get("art_id"))
-        art_key = ndb.Key(Art, art_id)
+    def post(self, url_key):
+        art_key = ndb.Key(urlsafe=url_key)
         art = art_key.get()
         art.title = self.request.get('image_name')
         art.tags = self.request.get('image_tags').split()
         art.put()
-        self.redirect('/modify_form')
+        self.redirect('/private/modify_form/' + url_key)
 
 
 app = webapp2.WSGIApplication([
@@ -132,7 +158,9 @@ app = webapp2.WSGIApplication([
     ('/upload_form', UploadFormHandler),
     ('/upload', UploadHandler),
     ('/view_art/([^/]+)?', ViewArtHandler),
+    ('/view_image/([^/]+)?', ViewImageHandler),
     ('/gallery', GalleryHandler),
-    ('/modify_form', ModifyFormHandler),
-    ('/modify', ModifyHandler)
+    ('/private/gallery', PrivateGalleryHandler),
+    ('/private/modify_form/([^/]+)?', ModifyFormHandler),
+    ('/private/modify/([^/]+)?', ModifyHandler)
 ], debug=True)

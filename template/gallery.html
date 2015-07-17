@@ -2,7 +2,9 @@
 
 {% block content %}
     <a href="/">Home</a><br>
-    {% for image in list_image %}
-    <img src="{{image}}=s300">
+    {% for image_url, image_key_url in list_image %}
+    <a href="/view_image/{{image_key_url}}">
+        <img src="{{image_url}}=s300">
+    </a>
     {% endfor %}
 {% endblock %}

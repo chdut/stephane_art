@@ -7,9 +7,9 @@ threadsafe: yes
 handlers:
 - url: /static
   static_dir: static
-- url: /upload_form
-  script: main.app
+- url: /private
   login: admin
+  script: main.app
 - url: /.*
   script: main.app
 
