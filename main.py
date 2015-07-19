@@ -9,12 +9,15 @@ from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api.images import get_serving_url
+from google.appengine.datastore.datastore_query import Cursor
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'template')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 LIST_TAGS = []
 LIST_TAG_UPDATED = False
+MAX_IMAGE_GALLERY = 2
 
 
 class Art(ndb.Model):
@@ -71,10 +74,8 @@ class HomePage(Handler):
         self.render("home.html", image=image)
 
     def get(self):
-        all_arts = Art.query()
-        for art in all_arts.fetch(6):
-            image = art.image_url
-            break
+        all_arts = Art.query().fetch(1)
+        image = all_arts[0].image_url
         self.render_main(image)
 
 
@@ -97,7 +98,6 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         new_art.image_url = get_serving_url(new_art.image_key)
         new_art.tags = self.request.get('image_tags').split()
         new_art.put()
-        #self.redirect('/view_art/%s' % upload.key())
         self.redirect('/private/upload_form')
 
 
@@ -109,22 +109,27 @@ class ViewArtHandler(blobstore_handlers.BlobstoreDownloadHandler):
             self.send_blob(photo_key)
 
 
+def query_list_image(cursor):
+    curs = Cursor(urlsafe=cursor)
+    all_arts, next_curs, more = Art.query().fetch_page(MAX_IMAGE_GALLERY, start_cursor=curs)
+    list_image = []
+    for art in all_arts:
+        list_image.append([art.image_url, art.key.urlsafe(), art.tags])
+    if more and next_curs:
+        return list_image, more, next_curs.urlsafe()
+    else:
+        return list_image, False, ""
+
+
 class GalleryHandler(Handler):
-    def render_main(self, list_image=""):
-        self.render("gallery.html", list_image=list_image)
+    def render_main(self, list_image="", more=False, next_cursor=""):
+        self.render("gallery.html", list_image=list_image, more=more, next_cursor=next_cursor)
 
     def get(self):
         update_list_tags()
-        all_arts = Art.query()
-        list_image = []
-        count = 0
-        max_image = 10
-        for art in all_arts.fetch(6):
-            list_image.append([art.image_url, art.key.urlsafe()])
-            count += 1
-            if count == max_image:
-                break
-        self.render_main(list_image)
+        cursor = self.request.get('cursor')
+        list_image, more, next_cursor = query_list_image(cursor)
+        self.render_main(list_image, more, next_cursor)
 
 
 class ViewImageHandler(Handler):
@@ -139,21 +144,14 @@ class ViewImageHandler(Handler):
 
 
 class PrivateGalleryHandler(Handler):
-    def render_main(self, list_image=""):
-        self.render("private_gallery.html", list_image=list_image)
+    def render_main(self, list_image="", more=False, next_cursor=""):
+        self.render("private_gallery.html", list_image=list_image, more=more, next_cursor=next_cursor)
 
     def get(self):
         update_list_tags()
-        all_arts = Art.query()
-        list_image = []
-        count = 0
-        max_image = 10
-        for art in all_arts.fetch(6):
-            list_image.append([art.image_url, art.key.urlsafe(), art.tags])
-            count += 1
-            if count == max_image:
-                break
-        self.render_main(list_image)
+        cursor = self.request.get('cursor')
+        list_image, more, next_cursor = query_list_image(cursor)
+        self.render_main(list_image, more, next_cursor)
 
 
 class ModifyFormHandler(Handler):

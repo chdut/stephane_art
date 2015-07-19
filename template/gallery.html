@@ -2,9 +2,11 @@
 
 {% block content %}
     <a href="/">Home</a><br>
-    {% for image_url, image_key_url in list_image %}
+    {% for image_url, image_key_url, tags in list_image %}
     <a href="/view_image/{{image_key_url}}">
         <img src="{{image_url}}=s300">
     </a>
     {% endfor %}
+    <div>{% if more == True %}<a href="/gallery?cursor={{next_cursor}}">More...</a>{% endif %}
+  </div>
 {% endblock %}
