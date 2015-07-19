@@ -2,8 +2,13 @@
 
 {% block content %}
     <a href="/">Home</a><br>
+    <form>
+    {% for tag in list_tags -%}
+        <input type="radio" name="tag" id="{{tag}}" value="{{tag}}" onClick="location.href='{{ private }}/gallery?select_tag={{tag}}'">{{tag}}
+    {% endfor %}
+    </form>
     {% for image_url, image_key_url, tags in list_image %}
-        {% if private == False %}
+        {% if private == "" %}
             <a href="/view_image/{{image_key_url}}">
         {% else %}
             <a href="/private/modify_form/{{image_key_url}}">
@@ -12,11 +17,14 @@
     </a>
     {% endfor %}
     <div>{% if more == True %}
-            {% if private == False %}
-                <a href="/gallery?cursor={{next_cursor}}">More...</a>
-            {% else %}
-                <a href="/private/gallery?cursor={{next_cursor}}">More...</a>
-            {% endif %}
+             <a href="{{ private }}/gallery?cursor={{next_cursor}}&select_tag={{select_tag}}">More...</a>
         {% endif %}
-  </div>
+    </div>
+    <div>
+
+    </div>
+    <script type="text/javascript">
+        var select_tag = document.getElementById("{{select_tag}}");
+        select_tag.checked=true;
+    </script>
 {% endblock %}
