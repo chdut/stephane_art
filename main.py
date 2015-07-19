@@ -13,12 +13,33 @@ from google.appengine.api.images import get_serving_url
 template_dir = os.path.join(os.path.dirname(__file__), 'template')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
+LIST_TAGS = []
+LIST_TAG_UPDATED = False
+
 
 class Art(ndb.Model):
     title = ndb.StringProperty()
     image_key = ndb.BlobKeyProperty()
     image_url = ndb.StringProperty()
     tags = ndb.StringProperty(repeated=True)
+
+    def _pre_put_hook(self):
+        global LIST_TAGS
+        for tag in self.tags:
+            if tag not in LIST_TAGS:
+                LIST_TAGS.append(tag)
+
+
+def update_list_tags():
+    global LIST_TAG_UPDATED
+    global LIST_TAGS
+    if not LIST_TAG_UPDATED:
+        all_arts = Art.query()
+        for art in all_arts.fetch(6):
+            for tag in art.tags:
+                if tag not in LIST_TAGS:
+                    LIST_TAGS.append(tag)
+        LIST_TAG_UPDATED = True
 
 
 class Handler(webapp2.RequestHandler):
@@ -51,7 +72,7 @@ class HomePage(Handler):
 
     def get(self):
         all_arts = Art.query()
-        for art in all_arts:
+        for art in all_arts.fetch(6):
             image = art.image_url
             break
         self.render_main(image)
@@ -77,7 +98,7 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         new_art.tags = self.request.get('image_tags').split()
         new_art.put()
         #self.redirect('/view_art/%s' % upload.key())
-        self.redirect('/upload_form')
+        self.redirect('/private/upload_form')
 
 
 class ViewArtHandler(blobstore_handlers.BlobstoreDownloadHandler):
@@ -93,11 +114,12 @@ class GalleryHandler(Handler):
         self.render("gallery.html", list_image=list_image)
 
     def get(self):
+        update_list_tags()
         all_arts = Art.query()
         list_image = []
         count = 0
         max_image = 10
-        for art in all_arts:
+        for art in all_arts.fetch(6):
             list_image.append([art.image_url, art.key.urlsafe()])
             count += 1
             if count == max_image:
@@ -121,11 +143,12 @@ class PrivateGalleryHandler(Handler):
         self.render("private_gallery.html", list_image=list_image)
 
     def get(self):
+        update_list_tags()
         all_arts = Art.query()
         list_image = []
         count = 0
         max_image = 10
-        for art in all_arts:
+        for art in all_arts.fetch(6):
             list_image.append([art.image_url, art.key.urlsafe(), art.tags])
             count += 1
             if count == max_image:
@@ -155,7 +178,7 @@ class ModifyHandler(Handler):
 
 app = webapp2.WSGIApplication([
     ('/', HomePage),
-    ('/upload_form', UploadFormHandler),
+    ('/private/upload_form', UploadFormHandler),
     ('/upload', UploadHandler),
     ('/view_art/([^/]+)?', ViewArtHandler),
     ('/view_image/([^/]+)?', ViewImageHandler),
