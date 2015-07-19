@@ -17,7 +17,7 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), aut
 
 LIST_TAGS = []
 LIST_TAG_UPDATED = False
-MAX_IMAGE_GALLERY = 2
+MAX_IMAGE_GALLERY = 3
 
 
 class Art(ndb.Model):
@@ -123,7 +123,7 @@ def query_list_image(cursor):
 
 class GalleryHandler(Handler):
     def render_main(self, list_image="", more=False, next_cursor=""):
-        self.render("gallery.html", list_image=list_image, more=more, next_cursor=next_cursor)
+        self.render("gallery.html", list_image=list_image, more=more, next_cursor=next_cursor, private=False)
 
     def get(self):
         update_list_tags()
@@ -145,7 +145,7 @@ class ViewImageHandler(Handler):
 
 class PrivateGalleryHandler(Handler):
     def render_main(self, list_image="", more=False, next_cursor=""):
-        self.render("private_gallery.html", list_image=list_image, more=more, next_cursor=next_cursor)
+        self.render("gallery.html", list_image=list_image, more=more, next_cursor=next_cursor, private=True)
 
     def get(self):
         update_list_tags()

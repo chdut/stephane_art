@@ -3,10 +3,20 @@
 {% block content %}
     <a href="/">Home</a><br>
     {% for image_url, image_key_url, tags in list_image %}
-    <a href="/view_image/{{image_key_url}}">
+        {% if private == False %}
+            <a href="/view_image/{{image_key_url}}">
+        {% else %}
+            <a href="/private/modify_form/{{image_key_url}}">
+        {% endif %}
         <img src="{{image_url}}=s300">
     </a>
     {% endfor %}
-    <div>{% if more == True %}<a href="/gallery?cursor={{next_cursor}}">More...</a>{% endif %}
+    <div>{% if more == True %}
+            {% if private == False %}
+                <a href="/gallery?cursor={{next_cursor}}">More...</a>
+            {% else %}
+                <a href="/private/gallery?cursor={{next_cursor}}">More...</a>
+            {% endif %}
+        {% endif %}
   </div>
 {% endblock %}
