@@ -138,15 +138,16 @@ class GalleryHandler(Handler):
 
 
 class ViewImageHandler(Handler):
-    def render_main(self, image="", image_name=""):
-        self.render("view_image.html", image_url=image, image_name=image_name)
+    def render_main(self, image="", image_name="", key_urlsafe=""):
+        self.render("view_image.html", image_url=image, image_name=image_name, key_urlsafe=key_urlsafe)
 
     def get(self, url_key):
         art_key = ndb.Key(urlsafe=url_key)
         art = art_key.get()
         image = art.image_url
         image_name = art.title
-        self.render_main(image, image_name)
+        key_urlsafe = art.key.urlsafe()
+        self.render_main(image, image_name, key_urlsafe)
 
 
 class PrivateGalleryHandler(Handler):
