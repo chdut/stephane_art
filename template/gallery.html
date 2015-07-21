@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="/">Home</a><br>
     <form>
     {% for tag in list_tags -%}
         <input type="radio" name="tag" id="{{tag}}" value="{{tag}}" onClick="location.href='{{ private }}/gallery?select_tag={{tag}}'">{{tag}}

@@ -1,19 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 	<meta charset="UTF-8">
 	<link type="text/css" rel="stylesheet" href="/static/main.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
 	</script>
 	<title>Home Stephane's art</title>
+    <meta property="og:site_name" content="Stephane's Art"/>
+    <meta property="og:type" content="website"/>
+    {% block head %}
+    {% endblock %}
+    <meta property="og:description" content="La rencontre entre mon désire de créer un site internet et le gribouillage avec ma fille. "/>
+    <meta property="fb:admins" content="1247329132" />
 </head>
 
 <body>
 <h1>Stephane's Art</h1>
+<a href="/">Home</a>
+<a href="/gallery?select_tag=All">Gallery</a>
+<a href="/questions">Questions</a>
+<a href="/contact">Contact</a>
+<a href="/don">Don</a>
+<br>
 	<div id="mydiv">
 	{% block content %}
 	{% endblock %}
 	</div>
+<div class="fb-like" data-layout="button" data-share="true" data-show-faces=false" data-href="http://www.stephane-art.fr" ></div>
 </body>
-
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.4";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    F
+    </script>
 </html>

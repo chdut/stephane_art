@@ -70,13 +70,14 @@ class Handler(webapp2.RequestHandler):
 
 
 class HomePage(Handler):
-    def render_main(self, image=""):
-        self.render("home.html", image=image)
+    def render_main(self, image_name="", image_url=""):
+        self.render("home.html", image_name=image_name, image_url=image_url)
 
     def get(self):
         all_arts = Art.query().fetch(1)
-        image = all_arts[0].image_url
-        self.render_main(image)
+        image_name = all_arts[0].title
+        image_url = all_arts[0].image_url
+        self.render_main(image_name, image_url)
 
 
 class UploadFormHandler(Handler):
@@ -138,7 +139,7 @@ class GalleryHandler(Handler):
 
 class ViewImageHandler(Handler):
     def render_main(self, image="", image_name=""):
-        self.render("view_image.html", image=image, image_name=image_name)
+        self.render("view_image.html", image_url=image, image_name=image_name)
 
     def get(self, url_key):
         art_key = ndb.Key(urlsafe=url_key)
@@ -180,14 +181,50 @@ class ModifyHandler(Handler):
         self.redirect('/private/modify_form/' + url_key)
 
 
+class ContactHandler(Handler):
+    def render_main(self):
+        self.render("contact.html")
+
+    def get(self):
+        self.render_main()
+
+
+class QuestionHandler(Handler):
+    def render_main(self):
+        self.render("question.html")
+
+    def get(self):
+        self.render_main()
+
+
+class DonHandler(Handler):
+    def render_main(self):
+        self.render("don.html")
+
+    def get(self):
+        self.render_main()
+
+
+class ExempleHandler(Handler):
+    def render_main(self):
+        self.render("exemple.html")
+
+    def get(self):
+        self.render_main()
+
+
 app = webapp2.WSGIApplication([
     ('/', HomePage),
-    ('/private/upload_form', UploadFormHandler),
-    ('/upload', UploadHandler),
     ('/view_art/([^/]+)?', ViewArtHandler),
     ('/view_image/([^/]+)?', ViewImageHandler),
     ('/gallery', GalleryHandler),
+    ('/contact', ContactHandler),
+    ('/questions', QuestionHandler),
+    ('/don', DonHandler),
+    ('/exemple', ExempleHandler),
     ('/private/gallery', PrivateGalleryHandler),
     ('/private/modify_form/([^/]+)?', ModifyFormHandler),
-    ('/private/modify/([^/]+)?', ModifyHandler)
+    ('/private/modify/([^/]+)?', ModifyHandler),
+    ('/private/upload_form', UploadFormHandler),
+    ('/upload', UploadHandler),
 ], debug=True)
