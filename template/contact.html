@@ -1,4 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="contact">
+    <p id="contact" class="contact">
+        Si vous avez des questions ou desirez un theme que vous ne trouvez pas sur le site, vous pouvez me contacter à cet email.
+    </p>
+    <p id="email" class="email">
+
+    </p>
+</div>
+{% endblock %}
+{% block script %}
+    <script language="JavaScript">
+    var username = "stephane.duteriez+web";
+    var hostname = "gmail.com";
+    var linktext = username + "@" + hostname ;
+    var email = document.getElementById("email");
+    email.innerHTML += "<a href='" + "mail" + "to:" + username + "@" + hostname + "'>" + linktext + "</a>";
+    </script>
 {% endblock %}

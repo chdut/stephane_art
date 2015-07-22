@@ -1,27 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form>
-    {% for tag in list_tags -%}
-        <input type="radio" name="tag" id="{{tag}}" value="{{tag}}" onClick="location.href='{{ private }}/gallery?select_tag={{tag}}'">{{tag}}
-    {% endfor %}
-    </form>
-    {% for image_url, image_key_url, tags in list_image %}
-        {% if private == "" %}
-            <a href="/view_image/{{image_key_url}}">
-        {% else %}
-            <a href="/private/modify_form/{{image_key_url}}">
-        {% endif %}
-        <img src="{{image_url}}=s300">
-    </a>
-    {% endfor %}
-    <div>{% if more == True %}
+    <div>
+        <div class="right">
+            <form>
+            {% for tag in list_tags -%}
+                <div>
+                <input type="radio" name="tag" id="{{tag}}" value="{{tag}}" onClick="location.href='{{ private }}/gallery?select_tag={{tag}}'">
+                <label for="{{tag}}">{{tag}}</label>
+                </div>
+            {% endfor %}
+            </form>
+        </div>
+        <div class="left">
+        {% for image_url, image_key_url, tags in list_image %}
+            {% if private == "" %}
+                <a href="/view_image/{{image_key_url}}">
+            {% else %}
+                <a href="/private/modify_form/{{image_key_url}}">
+            {% endif %}
+                <img class="gallery" src="{{image_url}}=s300">
+                </a>
+        {% endfor %}
+         </div>
+    </div>
+    <div class="bottom-left">
+        {% if more == True %}
              <a href="{{ private }}/gallery?cursor={{next_cursor}}&select_tag={{select_tag}}">More...</a>
         {% endif %}
     </div>
-    <div>
-
-    </div>
+{% endblock %}
+{% block script %}
     <script type="text/javascript">
         var select_tag = document.getElementById("{{select_tag}}");
         select_tag.checked=true;

@@ -15,17 +15,20 @@
 </head>
 
 <body>
-<h1>Stephane's Art</h1>
-<a href="/">Home</a>
-<a href="/gallery?select_tag=All">Gallery</a>
-<a href="/questions">Questions</a>
-<a href="/contact">Contact</a>
-<a href="/don">Don</a>
-<br>
-	<div id="mydiv">
-	{% block content %}
-	{% endblock %}
-	</div>
+    <h1>Stephane's Art</h1>
+    <div class="menu">
+    <ul style="width:100%" class="menu">
+        <li class="menu"><a href="/" class="menu">Home</a></li>
+        <li class="menu"><a href="/gallery?select_tag=All" class="menu">Gallery</a></li>
+        <li class="menu"><a href="/questions" class="menu">Questions</a></li>
+        <li class="menu"><a href="/contact" class="menu">Contact</a></li>
+        <li class="menu"><a href="/don" class="menu">Don</a></li>
+    </ul><br>
+    </div>
+    <div id="mydiv">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 <div id="fb-root"></div>
 <script>
@@ -36,6 +39,7 @@
         js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.4";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-    F
-    </script>
+</script>
+    {% block script %}
+    {% endblock %}
 </html>
