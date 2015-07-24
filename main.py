@@ -17,7 +17,7 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), aut
 
 LIST_TAGS = ["All"]
 LIST_TAG_UPDATED = False
-MAX_IMAGE_GALLERY = 3
+MAX_IMAGE_GALLERY = 6
 
 
 class Art(ndb.Model):

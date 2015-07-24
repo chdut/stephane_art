@@ -56,6 +56,7 @@ li.menu {
     margin-left: 0.5%;
     margin-right: 0.5%;
     width:19%;
+    box-shadow: 5px 5px 2px grey;
     }
 
 a.menu {
@@ -71,16 +72,24 @@ li.menu:hover {
 
 div.right{
     float:right;
-    width:10%
-    min;
+    width:100px;
     }
 div.left{
-    float:left;
-    width:90%;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    margin-right:105px
+    padding:auto;
     }
 img.gallery{
-    width:30%;
+    display: table-cell;
+    width:25%;
+    max-width:300px;
+    min-width:150px;
     }
 div.bottom-left{
     clear:left;
+    }
+div.mydiv{
+    margin-top:10px;
     }
