@@ -2,7 +2,7 @@ h1 {
     font-family: "";
     width = 100%;
     text-align: center;
-    font-size: 100px;
+    font-size: 6em;
     margin-top : 30px;
     margin-bottom : 30px;
 }
@@ -15,10 +15,11 @@ img.centered {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    max-width:100%;
 }
 
 div.contact {
-    max-width : 300px;
+    max-width : 21em;
     margin-left: auto;
     margin-right: auto;
 }
@@ -35,13 +36,13 @@ div.menu{
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 10px;
-    max-width:600px
+    max-width:42em;
+    font-size:1.3em;
 }
 ul.menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 600px
 }
 
 li.menu {
@@ -71,25 +72,49 @@ li.menu:hover {
     }
 
 div.right{
-    float:right;
-    width:100px;
+    order:2;
+    min-width:8em;
     }
 div.left{
+    order:1;
     display:flex;
-    flex-flow: row wrap;
+    flex-wrap: wrap;
     justify-content: space-around;
-    margin-right:105px
-    padding:auto;
+    padding-right:5px
     }
-img.gallery{
-    display: table-cell;
-    width:25%;
-    max-width:300px;
-    min-width:150px;
+div.gallery{
+    flex-basis:auto;
     }
 div.bottom-left{
     clear:left;
     }
 div.mydiv{
     margin-top:10px;
+    display:flex;
+    }
+img.gallery{
+    width  :14em;
+    }
+@media all and (max-width: 500px) {
+    div.mydiv{
+        flex-direction:column;
+    }
+}
+@media
+(min-resolution: 144dpi){
+    div.menu {
+        font-size:2em;
+        max-width:100%;
+        }
+    ul.menu {
+        }
+    div.right {
+        font-size:2em;
+        min-width:6em;
+        }
+    div.contact{
+        max-width:90%;
+        font-size:2em;
+        }
+
     }

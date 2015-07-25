@@ -1,7 +1,7 @@
 import webapp2
 import jinja2
 import os
-
+import random
 
 from google.appengine.ext import ndb
 from google.appengine.api import images
@@ -17,7 +17,9 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), aut
 
 LIST_TAGS = ["All"]
 LIST_TAG_UPDATED = False
-MAX_IMAGE_GALLERY = 6
+MAX_IMAGE_GALLERY = 12
+HOME_ART_key = {"image_name": "", "image_url": "", "updated": False}
+COUNT = 0
 
 
 class Art(ndb.Model):
@@ -25,6 +27,7 @@ class Art(ndb.Model):
     image_key = ndb.BlobKeyProperty()
     image_url = ndb.StringProperty()
     tags = ndb.StringProperty(repeated=True)
+    score = ndb.FloatProperty()
 
     def _pre_put_hook(self):
         global LIST_TAGS
@@ -74,10 +77,18 @@ class HomePage(Handler):
         self.render("home.html", image_name=image_name, image_url=image_url)
 
     def get(self):
-        all_arts = Art.query().fetch(1)
-        image_name = all_arts[0].title
-        image_url = all_arts[0].image_url
-        self.render_main(image_name, image_url)
+        global HOME_ART_key
+        global COUNT
+        COUNT += 1
+        if not HOME_ART_key["updated"] or COUNT == 4:
+            all_arts_keys = Art.query().fetch(keys_only=True)
+            random_art_key = random.choice(all_arts_keys)
+            random_art = random_art_key.get()
+            HOME_ART_key["image_name"] = random_art.title
+            HOME_ART_key["image_url"] = random_art.image_url
+            HOME_ART_key["updated"] = True
+            COUNT = 0
+        self.render_main(HOME_ART_key["image_name"], HOME_ART_key["image_url"])
 
 
 class UploadFormHandler(Handler):

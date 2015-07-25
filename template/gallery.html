@@ -14,13 +14,15 @@
         </div>
         <div class="left">
         {% for image_url, image_key_url, tags in list_image %}
+            <div class="gallery">
             {% if private == "" %}
                 <a href="/view_image/{{image_key_url}}">
             {% else %}
                 <a href="/private/modify_form/{{image_key_url}}">
             {% endif %}
-                <img class="gallery" src="{{image_url}}=s300">
+                <img  class="gallery" src="{{image_url}}=s150">
                 </a>
+             </div>
         {% endfor %}
          </div>
     </div>
