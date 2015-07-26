@@ -4,9 +4,11 @@
 <a href="/private/gallery">vers gallery</a><br>
 <form action = "/private/modify/{{art_key}}" enctype="multipart/form-data" method="post">
     <h2>actual information</h2>
-    <div><input type="text" name="image_name" value="{{art_title}}"></div>
-        Tags associate to the image: <br>
-        <div><input type="text" name="image_tags" value="{% for tag in art_tags -%}{{tag}} {% endfor %}" size="50"></div>
+    <div>
+        <input type="text" name="image_name" value="{{art_title}}">
+        <input type="text" name="image_tags" value="{% for tag in art_tags -%}{{tag}} {% endfor %}" size="50">
+        <input type="number" name="image_score" value="{{ art_score }}">
+    </div>
         <div><label>Image</label></div>
         <div><input type="submit" value="modify"></div>
     <img src="{{art_image}}=s300" class="centered">

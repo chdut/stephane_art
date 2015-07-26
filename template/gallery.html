@@ -13,7 +13,7 @@
             </form>
         </div>
         <div class="left">
-        {% for image_url, image_key_url, tags in list_image %}
+        {% for image_url, image_key_url, tags, score in list_image %}
             <div class="gallery">
             {% if private == "" %}
                 <a href="/view_image/{{image_key_url}}">
@@ -29,6 +29,9 @@
     <div class="bottom-left">
         {% if more == True %}
              <a href="{{ private }}/gallery?cursor={{next_cursor}}&select_tag={{select_tag}}">More...</a>
+        {% endif %}
+        {% if private == "/private" %}
+            <a href="www.stephane-art.fr/private/upload_form">Upload</a>
         {% endif %}
     </div>
 {% endblock %}
