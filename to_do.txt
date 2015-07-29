@@ -1,6 +1,4 @@
-*créer un attributs like pour pouvoir classer les images sur les pages de gallery
 *systeme de payment
-*page de contact
 *page what to do
-*page question
-*facebook link
+*faire une marge en bas de la page
+*gestion anglais/francais
