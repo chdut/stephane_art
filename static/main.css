@@ -100,6 +100,17 @@ img.gallery{
     width  :14em;
     }
 
+div.message {
+    display:none;
+    background:white;
+    position: fixed;
+    top: 50%;
+    right: 25%;
+    width:46%;
+    padding:10px;
+    border: 3px solid #8AC007;
+    text-align:justify;
+    }
 @media all and (max-width: 700px) {
     h1{
         font-size: 3em
