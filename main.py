@@ -77,13 +77,10 @@ class HomePage(Handler):
     def get(self):
         to_change = False
         date_home_change = memcache.get("date_home_change")
-        if date_home_change is None:
+        if date_home_change is None or date_home_change < date.today():
             to_change = True
-            memcache.set("date_home_change", date.today())
-        else:
-            if date_home_change < date.today():
-                to_change = True
-                memcache.set("date_home_change", date.today())
+            date_today = date.today()
+            memcache.set("date_home_change", date_today)
         home_art_key = memcache.get("home_art_key")
         if home_art_key is None or to_change:
             all_arts_keys = Art.query().fetch(keys_only=True)
@@ -92,6 +89,7 @@ class HomePage(Handler):
             home_art_key = dict()
             home_art_key["image_name"] = random_art.title
             home_art_key["image_url"] = random_art.image_url
+            memcache.set("home_art_key", home_art_key)
         self.render_main(home_art_key["image_name"], home_art_key["image_url"])
 
 
