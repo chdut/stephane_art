@@ -35,7 +35,7 @@ p.contact {
 div.menu{
     margin-left: auto;
     margin-right: auto;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     max-width:42em;
     font-size:1.3em;
 }
@@ -89,7 +89,6 @@ div.bottom-left{
     clear:left;
     }
 div.mydiv{
-    margin-top:10px;
     display:flex;
     }
 img.gallery{
