@@ -9,8 +9,10 @@
 {% endblock %}
 
 {% block content %}
+    <div class="single_picture">
     <a href="{{image_url}}=s0" download="{{image_name}}.jpg" title="{{image_name}}">
         <img src="{{image_url}}=s600" class="centered" alt="{{image_name}}">
     </a>
     <div class="fb-like" data-layout="button" data-share="true" data-show-faces=false" data-href="http://www.stephane-art.fr/view_image/{{key_urlsafe}}" ></div>
+    </div>
 {% endblock %}
