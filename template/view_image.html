@@ -16,14 +16,18 @@
     <div class="fb-like" data-layout="button" data-share="true" data-show-faces=false" data-href="http://www.stephane-art.fr/view_image/{{key_urlsafe}}" ></div>
     </div>
     <div class="message" id="message">
-        <p>Montrez votre appreciation pour ce que vous aimez, faites un don ici.</p>
+        <p>Montrez votre appreciation pour ce que vous aimez, faites un don <a href="/don">ici</a>.</p>
     </div>
 {% endblock %}
 
 {% block script %}
      <script type="text/javascript">
      function displayDonationMessage() {
-        document.getElementById("message").style.display="block";
+        already_view = readCookie("view")
+        if (already_view == null) {
+            document.getElementById("message").style.display="block";
+            createCookie("view", "True", 1)
+        }
         }
     </script>
 {% endblock %}

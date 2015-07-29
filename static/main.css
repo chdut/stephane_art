@@ -1,7 +1,8 @@
 body, html {
     height:100%;
     }
-
+p {
+}
 h1 {
     font-family: "";
     width = 100%;
@@ -80,6 +81,7 @@ div.right{
     order:2;
     min-width:8em;
     }
+
 div.left{
     order:1;
     display:flex;
@@ -87,15 +89,19 @@ div.left{
     justify-content: space-around;
     padding-right:5px
     }
+
 div.gallery{
     flex-basis:auto;
     }
+
 div.bottom-left{
     clear:left;
     }
+
 div.mydiv{
     display:flex;
     }
+
 img.gallery{
     width  :14em;
     }
@@ -108,9 +114,11 @@ div.message {
     right: 25%;
     width:46%;
     padding:10px;
-    border: 3px solid #8AC007;
-    text-align:justify;
+    border: 3px solid black;
+    text-align:center;
+    box-shadow: 5px 5px 2px grey;
     }
+
 @media all and (max-width: 700px) {
     h1{
         font-size: 3em
