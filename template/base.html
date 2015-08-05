@@ -17,6 +17,9 @@
 <body>
     <div class="langue">
     </div>
+    <div class="langue">
+        <span id="Fr" onclick="change_language_to_fr()" class="langue">Fr</span>/<span id="En" onclick="change_language_to_en()" class="langue">En</span>
+    </div>
     <h1>Stephane's Art</h1>
     <div class="menu">
     <ul style="width:100%" class="menu">
@@ -41,13 +44,13 @@
     }(document, 'script', 'facebook-jssdk'));
 
     function createCookie(name,value,days) {
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-	}
-	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
     }
 
     function readCookie(name) {
@@ -63,6 +66,29 @@
 
     function eraseCookie(name) {
         createCookie(name,"",-1);
+    }
+
+    function change_language_to_fr() {
+        createCookie("language", "Fr");
+        location.reload();
+    }
+
+    function change_language_to_en() {
+        createCookie("language", "En");
+        location.reload();
+    }
+
+    language = readCookie("language");
+    if (language == null){
+        language = "Fr";
+        createCookie("language", "Fr");
+    }
+    if (language == "Fr") {
+        document.getElementById("Fr").style.background = "Cyan";
+        document.getElementById("En").style.background = "White";
+    } else {
+        document.getElementById("Fr").style.background = "White";
+        document.getElementById("En").style.background = "Cyan";
     }
 </script>
     {% block script %}

@@ -82,6 +82,7 @@ li.menu:hover {
 div.right{
     order:2;
     min-width:8em;
+    font-size:1em;
     }
 
 div.left{
@@ -98,6 +99,8 @@ div.gallery{
 
 div.bottom-left{
     clear:left;
+    padding-bottom:20px;
+    font-size:1.3em;
     }
 
 div.myDiv{
@@ -119,6 +122,19 @@ div.message {
     border: 3px solid black;
     text-align:center;
     box-shadow: 5px 5px 2px grey;
+    }
+
+div.langue {
+    position: absolute;
+    right:0px;
+    }
+
+span.langue{
+    padding:5px;
+    margin:4px;
+    border-radius:10px;
+    box-shadow: 5px 5px 2px grey;
+    border:1px solid black;
     }
 
 @media all and (max-width: 700px) {
@@ -148,6 +164,8 @@ div.message {
         max-width:90%;
         font-size:2em;
         }
-
+    div.bottom-left{
+    font-size:2em;
+    }
     }
 
