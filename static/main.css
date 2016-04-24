@@ -94,7 +94,8 @@ div.left{
     }
 
 div.gallery{
-    flex-basis:auto;
+    flex-basis:14em;
+    flex-grow:1;
     }
 
 div.bottom-left{
